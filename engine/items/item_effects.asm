@@ -250,8 +250,14 @@ ItemUseBall:
 	ldh [hMultiplier], a
 	call Multiply
 
-; Determine BallFactor. It's 8 for Great Balls and 12 for the others.
+; Determine BallFactor. It's 8 for Great Balls and Ultra Balls and 12 for the others.
 	ld a, [wcf91]
+	cp ULTRA_BALL
+	jr nz, .skip0
+	ld a, 8
+	jr .skip1
+
+.skip0
 	cp GREAT_BALL
 	ld a, 12
 	jr nz, .skip1
