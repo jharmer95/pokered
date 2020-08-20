@@ -5419,11 +5419,15 @@ MoveHitTest:
 	ld a, [wEnemyMoveAccuracy]
 	ld b, a
 .doAccuracyCheck
-; if the random number generated is greater than or equal to the scaled accuracy, the move misses
-; note that this means that even the highest accuracy is still just a 255/256 chance, not 100%
+; if the random number generated is greater than the scaled accuracy, the move misses
 	call BattleRandom
 	cp b
-	jr nc, .moveMissed
+	jr nc, .moveCheckIfEqual
+	ret
+.moveCheckIfEqual
+; according to boolean logic: A >= N && A != N is equivalent to A > N
+; this allows the max accuracy to be 100% instead of 255/256
+	jr nz, .moveMissed
 	ret
 .moveMissed
 	xor a
