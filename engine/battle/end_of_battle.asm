@@ -42,7 +42,13 @@ EndOfBattle:
 .evolution
 	xor a
 	ld [wForceEvolution], a
+	ld a, [wcf91]
+	ld [wUnusedCF8D], a ; store off wcf91, just in case
+	ld a, $0
+	ld [wcf91], a ; clear wcf91 to prevent item evolution post battle
 	predef EvolutionAfterBattle
+	ld a, [wUnusedCF8D]
+	ld [wcf91], a ; return original wcf91, just in case
 .resetVariables
 	xor a
 	ld [wLowHealthAlarm], a ;disable low health alarm
